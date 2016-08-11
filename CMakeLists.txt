@@ -1,19 +1,19 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.6)
 set(CURL_MIN_VERSION "7.28.0")
 
-# Setting up project
-project(scratchpad.app)
+project(cpp_scratchpad)
 
-#set c++ flags
-set(CMAKE_CXX_FLAGS "-g -Wall -std=c++14")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+set(SOURCE_FILES
+    push.cpp)
 
 #set directories
 include_directories(/usr/local/include/curlpp)
 link_directories(/usr/local/include/curlpp)
 
-add_executable(scratchpad.app
-push.cpp
-)
+add_executable(cpp_scratchpad ${SOURCE_FILES})
+
 
 #link curl and curlcpp
-target_link_libraries(scratchpad.app curlpp.a curl)
+target_link_libraries(cpp_scratchpad curlpp.a curl)
