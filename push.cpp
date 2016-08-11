@@ -6,22 +6,33 @@
 
 using namespace std;
 
-
 int main()
 {
 
-  std::cout << "Hello, world!\n";
+  cout << "Hello, world!\n";
 
   // RAII cleanup
   curlpp::Cleanup myCleanup;
 
-  // Send request and get a result.
-  // Here I use a shortcut to get it in a string stream ...
+  curlpp::Easy request;
+  request.setOpt(new curlpp::options::Url(string("http://10.84.178.131:28000/v1/registration/push/android/ConnektSampleApp/8b742d1c870d5ba53ccce8ea318226d6")));
+  request.setOpt(new curlpp::options::FollowLocation("true"));
+  // request.setOpt(new curlpp::options::Verbose(true));
+
+  list<std::string> header;
+  header.push_back("x-api-key: sandbox-key-01");
+  header.push_back("Content-Type: application/json");
+  request.setOpt(new curlpp::options::HttpHeader(header));
+
+  request.setOpt(new curlpp::options::PostFields(string("{\"token\": \"token\", \"osVersion\": \"7.0\", \"appVersion\": \"720600\", \"brand\": \"Huawei\", \"model\": \"Nexus 6P\"}")));
+  request.setOpt(new curlpp::options::CustomRequest("PUT"));
+  
+  request.perform();
 
   std::ostringstream os;
-  os << curlpp::options::Url(std::string("https://raw.githubusercontent.com/Flipkart/espion/master/README.md"));
+  os << request;
 
-  std::string asAskedInQuestion = os.str();
+  string httpBody = os.str();
 
-  std::cout << asAskedInQuestion << "\n" ;
+  cout << httpBody << "\n" ;
 }
